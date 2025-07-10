@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Send SMS</title>
+</head>
+<body>
+  <h2>📩 Send SMS</h2>
+  <input type="text" id="to" placeholder="Phone Number (e.g. +91XXXXXXXXXX)" />
+  <input type="text" id="message" placeholder="Your message" />
+  <button onclick="sendSMS()">Send SMS</button>
+
+  <script>
+    function sendSMS() {
+      const to = document.getElementById('to').value;
+      const message = document.getElementById('message').value;
+
+      fetch('http://localhost:3000/send-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to, message })
+      })
+      .then(res => res.text())
+      .then(alert);
+    }
+  </script>
+</body>
+</html>

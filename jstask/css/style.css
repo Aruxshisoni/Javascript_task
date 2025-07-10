@@ -1,0 +1,92 @@
+:root {
+  --bg: #ffffff;
+  --text: #111;
+  --primary: #007bff;
+}
+
+[data-theme="dark"] {
+  --bg: #111;
+  --text: #eee;
+  --primary: #0dcaf0;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--primary);
+  padding: 1em;
+  color: #fff;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1em;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.toggle-theme {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2em;
+}
+
+.hero, .about, #services, #contact {
+  padding: 2em;
+  text-align: center;
+}
+
+input, textarea, button {
+  display: block;
+  margin: 0.5em auto;
+  padding: 0.5em;
+  width: 80%;
+  max-width: 400px;
+}
+
+/* Mobile Nav */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger div {
+  background: #fff;
+  height: 3px;
+  margin: 4px;
+  width: 25px;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: var(--primary);
+    position: absolute;
+    top: 60px;
+    right: 0;
+    padding: 1em;
+  }
+  .nav-links.active {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+  }
+}

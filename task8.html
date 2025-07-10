@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Show Route to Destination</title>
+    <style>
+      #map {
+        height: 500px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🧭 Show Route from My Location</h2>
+    <input type="text" id="destination" placeholder="Enter destination (e.g. Delhi)" />
+    <button onclick="getRoute()">Show Route</button>
+    <div id="map"></div>
+
+    <script>
+      let map, directionsService, directionsRenderer, currentPosition;
+
+      function initMap() {
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 7,
+          center: { lat: 28.6139, lng: 77.2090 }, // Default Delhi
+        });
+        directionsRenderer.setMap(map);
+      }
+
+      function getRoute() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(position => {
+            currentPosition = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+
+            const destination = document.getElementById("destination").value;
+            if (!destination) return alert("Please enter a destination.");
+
+            const request = {
+              origin: currentPosition,
+              destination: destination,
+              travelMode: 'DRIVING',
+            };
+
+            directionsService.route(request, (result, status) => {
+              if (status === 'OK') {
+                directionsRenderer.setDirections(result);
+              } else {
+                alert('Could not find route: ' + status);
+              }
+            });
+          }, err => {
+            alert("Error getting location: " + err.message);
+          });
+        } else {
+          alert("Geolocation not supported by this browser.");
+        }
+      }
+    </script>
+
+    <!-- 🔁 Replace YOUR_API_KEY -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+  </body>
+</html>

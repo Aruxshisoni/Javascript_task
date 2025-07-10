@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Send WhatsApp Message</title>
+</head>
+<body>
+  <h2>📲 Send WhatsApp Message on Click</h2>
+
+  <input type="text" id="number" placeholder="Enter WhatsApp number (e.g. 91xxxxxxxxxx)" />
+  <input type="text" id="message" placeholder="Enter your message" />
+  <button onclick="sendWhatsApp()">Send WhatsApp</button>
+
+  <script>
+    function sendWhatsApp() {
+      const number = document.getElementById('number').value;
+      const message = encodeURIComponent(document.getElementById('message').value);
+
+      if (!number || !message) {
+        alert('Please enter both number and message');
+        return;
+      }
+
+      const url = `https://wa.me/${number}?text=${message}`;
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>

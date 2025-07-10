@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Location on Map</title>
+    <style>
+      #map {
+        height: 500px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>📍 Show My Current Location</h2>
+    <button onclick="getLocation()">Show Location</button>
+    <div id="map"></div>
+
+    <script>
+      let map;
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+          alert("Geolocation not supported by this browser.");
+        }
+      }
+
+      function showPosition(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const myLatLng = { lat, lng };
+
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: myLatLng,
+          zoom: 15,
+        });
+
+        new google.maps.Marker({
+          position: myLatLng,
+          map,
+          title: "You are here!",
+        });
+      }
+
+      function showError(error) {
+        alert("Error getting location: " + error.message);
+      }
+    </script>
+
+    <!-- 🔁 Replace YOUR_API_KEY with your Google Maps JavaScript API key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+  </body>
+</html>

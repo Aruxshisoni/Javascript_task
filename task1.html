@@ -1,0 +1,37 @@
+<!-- Save as: camera.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Camera Capture</title>
+</head>
+<body>
+  <h2>Click Photo & Save</h2>
+  <video id="video" width="400" autoplay></video>
+  <br />
+  <button id="snap">📸 Take Photo</button>
+  <canvas id="canvas" width="400" height="300" style="display:none;"></canvas>
+  <a id="downloadLink" download="captured_image.png" style="display:none;">Download</a>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const downloadLink = document.getElementById('downloadLink');
+    const context = canvas.getContext('2d');
+
+    // Get access to the camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+      });
+
+    // Capture the photo
+    document.getElementById('snap').addEventListener('click', () => {
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const dataURL = canvas.toDataURL('image/png');
+      downloadLink.href = dataURL;
+      downloadLink.click();
+    });
+  </script>
+</body>
+</html>

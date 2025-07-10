@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Record & Email Video</title>
+</head>
+<body>
+  <h2>🎥 Record Video and Send via Email</h2>
+  <video id="preview" autoplay muted></video>
+  <br>
+  <button id="start">Start Recording</button>
+  <button id="stop" disabled>Stop & Send</button>
+
+  <script>
+    let mediaRecorder;
+    let recordedChunks = [];
+
+    const startBtn = document.getElementById('start');
+    const stopBtn = document.getElementById('stop');
+    const preview = document.getElementById('preview');
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then(stream => {
+        preview.srcObject = stream;
+
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = e => recordedChunks.push(e.data);
+        mediaRecorder.onstop = async () => {
+          const blob = new Blob(recordedChunks, { type: 'video/webm' });
+          const formData = new FormData();
+          formData.append('video', blob, 'recorded_video.webm');
+
+          const res = await fetch('http://localhost:3000/send-video', {
+            method: 'POST',
+            body: formData
+          });
+
+          const text = await res.text();
+          alert(text);
+        };
+      });
+
+    startBtn.onclick = () => {
+      recordedChunks = [];
+      mediaRecorder.start();
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+    };
+
+    stopBtn.onclick = () => {
+      mediaRecorder.stop();
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    };
+  </script>
+</body>
+</html>
